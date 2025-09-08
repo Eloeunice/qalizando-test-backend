@@ -50,3 +50,19 @@ end
 Entao('retorna que os dados do funcionario foram atualizados') do
   puts @update_employee
 end
+
+Dado('que o usuario delete um funcionario') do
+    @get_employee = HTTParty.get('http://dummy.restapiexample.com/api/v1/employees')
+    data = JSON.parse(@get_employee.body)
+    id = data["data"][0]["id"]
+    @delete_url = "http://dummy.restapiexample.com/api/v1/delete/#{id}"
+  end
+
+Quando('ele informar o dado do funcionario') do
+  @delete_employee = HTTParty.delete(@delete_url, :headers => {'Content-Type': 'application/json'})
+end
+
+Entao('retorna que o usuario foi deletado') do
+  body = JSON.parse(@delete_employee.body)
+  expect(body["message"]).to eql "Successfully! Record has been deleted"
+end
