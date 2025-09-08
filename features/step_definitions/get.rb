@@ -32,3 +32,21 @@ Entao('retorna que o funcionario foi cadastrado') do
   puts @create_employee.code
   expect(@create_employee.code).to eql (200)
 end
+
+Dado('que o usuario altere um funcionario') do
+  @put_url = 'http://dummy.restapiexample.com/api/v1/update/10'
+end
+
+Quando('ele inserir os novos dados do funcionario') do
+  @update_employee = HTTParty.put(@put_url,body:{
+  "id": 25,
+  "employee_name": "Marcos",
+  "employee_salary": 10000,
+  "employee_age": 25,
+  "profile_image": ""
+}.to_json)
+end
+
+Entao('retorna que os dados do funcionario foram atualizados') do
+  puts @update_employee
+end

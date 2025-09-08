@@ -15,3 +15,9 @@ Funcionalidade: Pesquisar Funcionarios
         Dado que o usuario cadastre um novo funcionario
         Quando ele inserir os dados do funcionario
         Entao retorna que o funcionario foi cadastrado
+
+    @cenario_tres
+    Cenario: Alterar informacoes do usuario
+        Dado que o usuario altere um funcionario
+        Quando ele inserir os novos dados do funcionario
+        Entao retorna que os dados do funcionario foram atualizados
