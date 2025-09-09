@@ -1,11 +1,11 @@
 
 Dado('que o usuario informar do funcionario') do
-    @get_url = 'http://dummy.restapiexample.com/api/v1/employees'
+    @getList = Employee_Requests.new
    
 end
 
 Quando('ele realizar a pesquisa') do
-    @list_employee = HTTParty.get(@get_url)
+    @list_employee = @getList.find_employee
 end
 
 Entao('uma lista de funcionarios deve ser retornada') do
@@ -14,17 +14,11 @@ Entao('uma lista de funcionarios deve ser retornada') do
 end
 
 Dado('que o usuario cadastre um novo funcionario') do
-    @post_url = 'http://dummy.restapiexample.com/api/v1/create'
+    @create = Employee_Requests.new
 end
 
 Quando('ele inserir os dados do funcionario') do
-  @create_employee = HTTParty.post(@post_url,body:{
-  "id": 25,
-  "employee_name": "Marcos",
-  "employee_salary": 95000,
-  "employee_age": 25,
-  "profile_image": ""
-}.to_json)
+  @create_employee = @create.create_employee('Carla',10000,27)
   puts @create_employee
 end
 
@@ -34,17 +28,11 @@ Entao('retorna que o funcionario foi cadastrado') do
 end
 
 Dado('que o usuario altere um funcionario') do
-  @put_url = 'http://dummy.restapiexample.com/api/v1/update/10'
+  @update = Employee_Requests.new
 end
 
 Quando('ele inserir os novos dados do funcionario') do
-  @update_employee = HTTParty.put(@put_url,body:{
-  "id": 25,
-  "employee_name": "Marcos",
-  "employee_salary": 10000,
-  "employee_age": 25,
-  "profile_image": ""
-}.to_json)
+  @update_employee = @update.update_employee(@update.find_employee['data'][0]['id'],"Carla", 45000,20)
 end
 
 Entao('retorna que os dados do funcionario foram atualizados') do
@@ -52,14 +40,11 @@ Entao('retorna que os dados do funcionario foram atualizados') do
 end
 
 Dado('que o usuario delete um funcionario') do
-    @get_employee = HTTParty.get('http://dummy.restapiexample.com/api/v1/employees')
-    data = JSON.parse(@get_employee.body)
-    id = data["data"][0]["id"]
-    @delete_url = "http://dummy.restapiexample.com/api/v1/delete/#{id}"
+    @request = Employee_Requests.new
   end
 
 Quando('ele informar o dado do funcionario') do
-  @delete_employee = HTTParty.delete(@delete_url, :headers => {'Content-Type': 'application/json'})
+  @delete_employee = @request.delete_employee(@request.find_employee['data'][0]['id'])
 end
 
 Entao('retorna que o usuario foi deletado') do
