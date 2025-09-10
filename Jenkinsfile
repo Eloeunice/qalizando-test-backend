@@ -9,7 +9,27 @@ pipeline {
             }
             stage('Tests Run'){
                 steps{
-                    sh script : 'docker run --name cucumber-httparty cucumber/httparty $@'
+                    script {
+                        try{
+                              sh script : 'docker run -V "$(pwd)/reports:/reports" --name cucumber-httparty cucumber/httparty $@'
+                              sh script: 'ls $(pwd/reports)'
+                        }
+                        catch (exception){
+                            echo exception.getMessage()
+                            currentBuild.result = 'UNSTABLE'
+
+                        }
+                    }
+                   
+                }
+            }
+            stage('Generating Test Report') {
+                steps{
+                     cucumber {
+                        fileIncludePattern: '*.json',
+                        jsonReportDirectory: '',
+                        buildStatus = 'UNSTABLE'
+                    }
                 }
             }
             stage('Deleting Container'){

@@ -8,4 +8,4 @@ RUN bundler install
 
 COPY . .
 
-CMD [ "cucumber" ]
+CMD [ "cucumber" , "--format", "json", "--out", "/reports/report.json"]
