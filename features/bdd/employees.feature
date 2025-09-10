@@ -1,5 +1,6 @@
 # language: pt
 
+@regressao
 Funcionalidade: Pesquisar Funcionarios
     Para averiguar informacoes
     O usuario do sistema
